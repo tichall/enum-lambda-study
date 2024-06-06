@@ -1,6 +1,8 @@
 import sparta.SampleUsers;
 import sparta.User;
 import sparta.enumtype.DiscountEvent;
+import sparta.enumtype.OrderStatus;
+import sparta.model.Order;
 import sparta.service.Coupon;
 import sparta.service.Product;
 
@@ -10,6 +12,22 @@ public class Main {
     public static void main(String[] args) {
         lambdaTest();
         enumTest();
+        testChangeStatus();
+    }
+
+    private static void testChangeStatus() {
+        System.out.println("\n------------------------------------------------------------------------");
+        System.out.println("--------------     배송상태 변경 테스트     ---------------------------------");
+        System.out.println("------------------------------------------------------------------------");
+
+        final Order iphone = new Order("아이폰135 Super Ultra Pro Max", OrderStatus.SHIPPED);
+        System.out.println("상품발송 --> 상품주문 = " + (iphone.isChangeable(OrderStatus.PREPARE)));
+        System.out.println("상품발송 --> 재배송 = " + (iphone.isChangeable(OrderStatus.RESHIPPED)));
+        System.out.println("상품발송 --> 배송완료 = " + (iphone.isChangeable(OrderStatus.DELIVERED)));
+
+        final Order maratang = new Order("마라탕", OrderStatus.CONFIRMED);
+        System.out.println("구매결정 --> 배송완료 = " + (maratang.isChangeable(OrderStatus.DELIVERED)));
+        System.out.println("구매결정 --> 구매결정 = " + (maratang.isChangeable(OrderStatus.CONFIRMED)));
     }
 
     private static void enumTest() {
